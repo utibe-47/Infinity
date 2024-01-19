@@ -6,7 +6,7 @@ import logging
 import pathlib
 import xlrd
 
-from data_handler.utilities import return_dataframe, return_dataframe_with_dt
+from utilities import return_dataframe, return_dataframe_with_dt
 
 
 class DataReader:
@@ -98,7 +98,7 @@ class DataReader:
         except FileNotFoundError:
             self.logger.debug('Could not find file {}'.format(filename))
             raise FileNotFoundError('Could not find file {}, confirm that file exists in same directory as '
-                                    '{} class'.format(filename, ReadFiles.__name__))
+                                    '{} class'.format(filename, DataReader.__name__))
         return csv_data
 
     def read_text_file(self, filename, folder_path=None, isfile_path=True):
