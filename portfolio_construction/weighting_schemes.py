@@ -4,14 +4,14 @@ import pandas as pd
 DF = pd.DataFrame
 
 
-def get_inverse_vol_weights(df: DF, window: int = 252) -> DF:
-    df = df.rolling(window=window).std()
-    df = df[window:]
-    df = 1 / df
-    df = df.replace([np.inf], np.NaN)
-    df = df.div(df.sum(axis=1, skipna=True), axis=0)
-    df.fillna(0, inplace=True)
-    return df
+def get_inverse_vol_weights(returns: DF, window: int = 252) -> DF:
+    vol = returns.rolling(window=window).std()
+    vol = vol[window:]
+    _weights = 1 / vol
+    _weights = _weights.replace([np.inf], np.NaN)
+    _weights = _weights.div(_weights.sum(axis=1, skipna=True), axis=0)
+    _weights.fillna(0, inplace=True)
+    return _weights
 
 
 def get_equally_weight(df: DF):
