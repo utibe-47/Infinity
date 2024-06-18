@@ -1,4 +1,6 @@
 from math import floor, ceil
+from typing import List
+
 Output = [24, 35, 9, 56, 12]
 
 
@@ -83,7 +85,28 @@ def print_pyramid(n):
         print(_str)
 
 
+def merge(nums1: List[int], m: int, nums2: List[int], n: int) -> List:
+
+    a, b, write_index = m-1, n-1, m + n - 1
+
+    while b >= 0:
+        if a >= 0 and nums1[a] > nums2[b]:
+            nums1[write_index] = nums1[a]
+            a -= 1
+        else:
+            nums1[write_index] = nums2[b]
+            b -= 1
+        write_index -= 1
+    return nums1
+
+
 if __name__ == '__main__':
+    nums1 = [1, 2, 3, 0, 0, 0]
+    m = 3
+    nums2 = [2, 5, 6]
+    n = 3
+    nums1 = merge(nums1, m, nums2, n)
+
     print_pyramid(8)
     _input = [12, 35, 9, 56, 24]
     _output = swap(_input)
