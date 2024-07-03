@@ -1,0 +1,747 @@
+{% extends "base.html" %}
+{% set active_item = 'other' %}
+{% set refresh_item = 'base' %}
+{% from "form_macros.html" import render_field %}
+
+{% block title %}
+Production Alternative Risk Premia Team Environment Dashboard -- Simulation run
+{%  endblock %}
+
+<head>
+    <title>HTML in 10 Simple Steps or Less</title>
+    <meta http-equiv="refresh" content="5" />
+</head>
+
+
+{% block content %}
+
+<style>
+
+.popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  width: 1000px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 16px;
+  padding: 8px 0;
+  position: sticky;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+.responsive {
+    box-sizing: border-box;
+    width: 26%;
+    height: 20px !important; /* specify a height */
+}
+.responsive {
+    position: relative;
+    display: table;
+    border-collapse: separate;
+
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+.responsive > input {
+    position: relative;
+    width: 50%;
+    float:left;
+    margin-bottom: 0;
+    display: table-cell;
+}
+.responsive span {
+    position: relative;
+    width: 1%;
+    vertical-align: middle;
+    display: table-cell;
+}
+.responsive span input {
+    margin: 0 0 0 -1px;
+    display: inline-block;
+    vertical-align: middle;
+    overflow: visible;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+
+</style>
+
+    <article>
+        <header>
+            <h1>Welcome {{ user.username }}</h1>
+            <p>What do you want to do today?</p>
+            <p>The algorithm is implemented on a production server with the master version on <a href="https://dev.azure.com/GAMInvestmentsQuants-ARP">Azure Devops</a>.</p>
+        </header>
+
+    </article>
+    <section>
+        <script>
+            var pop_up_dict = {};
+
+            $(document).keypress(
+              function(event){
+                if (event.which === '13') {
+                  event.preventDefault();
+                }
+            });
+
+
+            function do_alert(selectElem_value)
+            {
+                if (selectElem_value === "Manual Run" ) {
+                    document.getElementById("strategy_buttons").style.display="block";
+                    document.getElementById("execution_buttons").style.display="block";
+                    document.getElementById("account_control").style.display="block";
+                    document.getElementById("execution").style.display="block";
+                    document.getElementById("checks").style.display="block";
+                    document.getElementById("account_aum").style.display="block";
+                    document.getElementById("price_source").style.display="block";
+
+                    document.getElementById("reason_code").style.display="block";
+                    document.getElementById("send_to_live").style.display="block";
+                    document.getElementById("send_recon").style.display="none";
+                    document.getElementById("strategy_rerun").style.display="block";
+                    document.getElementById("choose_roll").style.display="none";
+                    document.getElementById("eda_rerun").style.display="none";
+
+                }
+                else if  (selectElem_value === "Run Strategy Only" )
+                {
+                    document.getElementById("strategy_buttons").style.display="block";
+                    document.getElementById("send_to_live").style.display="none";
+                    document.getElementById("account_aum").style.display="none";
+                    document.getElementById("execution_buttons").style.display="none";
+                    document.getElementById("send_recon").style.display="none";
+                    document.getElementById("account_control").style.display="none";
+
+                    document.getElementById("checks").style.display="none";
+                    document.getElementById("execution").style.display="none";
+                    document.getElementById("reason_code").style.display="none";
+                    document.getElementById("strategy_rerun").style.display="none";
+                    document.getElementById("price_source").style.display="none";
+                    document.getElementById("choose_roll").style.display="none";
+                    document.getElementById("eda_rerun").style.display="none";
+
+                }
+                else if (selectElem_value === "Run Scheduled Jobs" )
+                {
+                    document.getElementById("execution_buttons").style.display="none";
+                    document.getElementById("account_aum").style.display="none";
+                    document.getElementById("send_recon").style.display="none";
+
+                    document.getElementById("execution").style.display="none";
+                    document.getElementById("account_control").style.display="none";
+                    document.getElementById("checks").style.display="none";
+                    document.getElementById("price_source").style.display="none";
+                    document.getElementById("reason_code").style.display="none";
+                    document.getElementById("strategy_buttons").style.display="none";
+                    document.getElementById("strategy_rerun").style.display="none";
+                    document.getElementById("send_to_live").style.display="none";
+                    document.getElementById("choose_roll").style.display="none";
+                    document.getElementById("eda_rerun").style.display="none";
+                }
+                else if (selectElem_value === "Send Latest Positions To Live" )
+                {
+                    document.getElementById("execution_buttons").style.display="none";
+                    document.getElementById("account_aum").style.display="none";
+                    document.getElementById("send_recon").style.display="none";
+
+                    document.getElementById("execution").style.display="none";
+                    document.getElementById("account_control").style.display="none";
+                    document.getElementById("checks").style.display="none";
+                    document.getElementById("price_source").style.display="none";
+                    document.getElementById("reason_code").style.display="none";
+                    document.getElementById("strategy_buttons").style.display="none";
+                    document.getElementById("strategy_rerun").style.display="none";
+                    document.getElementById("send_to_live").style.display="none";
+                    document.getElementById("choose_roll").style.display="none";
+                    document.getElementById("eda_rerun").style.display="none";
+                }
+                else if (selectElem_value === "PreRun" )
+                {
+                    document.getElementById("execution_buttons").style.display="block";
+                    document.getElementById("account_aum").style.display="none";
+                    document.getElementById("send_recon").style.display="none";
+
+                    document.getElementById("execution").style.display="none";
+                    document.getElementById("account_control").style.display="block";
+                    document.getElementById("checks").style.display="block";
+                    document.getElementById("price_source").style.display="block";
+                    document.getElementById("reason_code").style.display="none";
+                    document.getElementById("strategy_buttons").style.display="block";
+                    document.getElementById("strategy_rerun").style.display="none";
+                    document.getElementById("send_to_live").style.display="none";
+                    document.getElementById("choose_roll").style.display="none";
+                    document.getElementById("eda_rerun").style.display="none";
+                }
+                else if (selectElem_value === "Full Rebalance" )
+                {
+                    document.getElementById("strategy_buttons").style.display="block";
+                    document.getElementById("execution_buttons").style.display="block";
+                    document.getElementById("account_control").style.display="block";
+                    document.getElementById("execution").style.display="none";
+                    document.getElementById("checks").style.display="block";
+                    document.getElementById("account_aum").style.display="block";
+                    document.getElementById("strategy_rerun").style.display="block";
+
+                    document.getElementById("reason_code").style.display="none";
+                    document.getElementById("send_to_live").style.display="block";
+                    document.getElementById("send_recon").style.display="none";
+                    document.getElementById("price_source").style.display="block";
+                    document.getElementById("choose_roll").style.display="none";
+                    document.getElementById("eda_rerun").style.display="block";
+                }
+                else if (selectElem_value === "Rebalancer" )
+                {
+                    document.getElementById("strategy_buttons").style.display="block";
+                    document.getElementById("execution_buttons").style.display="block";
+                    document.getElementById("account_control").style.display="block";
+                    document.getElementById("execution").style.display="none";
+                    document.getElementById("checks").style.display="block";
+                    document.getElementById("account_aum").style.display="block";
+                    document.getElementById("strategy_rerun").style.display="block";
+
+                    document.getElementById("reason_code").style.display="none";
+                    document.getElementById("send_to_live").style.display="block";
+                    document.getElementById("send_recon").style.display="none";
+                    document.getElementById("price_source").style.display="none";
+                    document.getElementById("choose_roll").style.display="none";
+                    document.getElementById("eda_rerun").style.display="none";
+                }
+                else if  (selectElem_value === "Run Eda Only" )
+                {
+                    document.getElementById("strategy_buttons").style.display="none";
+                    document.getElementById("send_to_live").style.display="none";
+                    document.getElementById("account_aum").style.display="none";
+                    document.getElementById("execution_buttons").style.display="block";
+                    document.getElementById("send_recon").style.display="none";
+                    document.getElementById("account_control").style.display="none";
+
+                    document.getElementById("checks").style.display="none";
+                    document.getElementById("execution").style.display="none";
+                    document.getElementById("reason_code").style.display="none";
+                    document.getElementById("strategy_rerun").style.display="none";
+                    document.getElementById("price_source").style.display="block";
+                    document.getElementById("choose_roll").style.display="none";
+                    document.getElementById("eda_rerun").style.display="none";
+                }
+                else if  (selectElem_value === "Run Hedge Report" )
+                {
+                    document.getElementById("strategy_buttons").style.display="none";
+                    document.getElementById("send_to_live").style.display="block";
+                    document.getElementById("account_aum").style.display="none";
+                    document.getElementById("execution_buttons").style.display="block";
+                    document.getElementById("send_recon").style.display="none";
+                    document.getElementById("account_control").style.display="block";
+
+                    document.getElementById("checks").style.display="none";
+                    document.getElementById("execution").style.display="none";
+                    document.getElementById("reason_code").style.display="none";
+                    document.getElementById("strategy_rerun").style.display="none";
+                    document.getElementById("price_source").style.display="none";
+                    document.getElementById("choose_roll").style.display="none";
+                    document.getElementById("eda_rerun").style.display="none";
+                }
+                else if  (selectElem_value === "Run Checks" )
+                {
+                    document.getElementById("send_to_live").style.display="none";
+                    document.getElementById("execution_buttons").style.display="block";
+                    document.getElementById("account_aum").style.display="none";
+                    document.getElementById("send_recon").style.display="none";
+
+                    document.getElementById("execution").style.display="none";
+                    document.getElementById("account_control").style.display="block";
+                    document.getElementById("checks").style.display="block";
+                    document.getElementById("reason_code").style.display="none";
+                    document.getElementById("strategy_buttons").style.display="none";
+                    document.getElementById("strategy_rerun").style.display="none";
+                    document.getElementById("price_source").style.display="none";
+                    document.getElementById("choose_roll").style.display="none";
+                    document.getElementById("eda_rerun").style.display="none";
+                }
+                else if  (selectElem_value === "Roll Positions" )
+                {
+                    document.getElementById("execution_buttons").style.display="none";
+                    document.getElementById("account_control").style.display="none";
+                    document.getElementById("execution").style.display="none";
+                    document.getElementById("send_to_live").style.display="none";
+                    document.getElementById("checks").style.display="none";
+                    document.getElementById("account_aum").style.display="none";
+                    document.getElementById("choose_roll").style.display="block";
+
+                    document.getElementById("strategy_buttons").style.display="none";
+                    document.getElementById("send_recon").style.display="none";
+                    document.getElementById("reason_code").style.display="none";
+                    document.getElementById("strategy_rerun").style.display="none";
+                    document.getElementById("price_source").style.display="none";
+                    document.getElementById("eda_rerun").style.display="none";
+                }
+                else if  (selectElem_value === "Select" )
+                {
+                    document.getElementById("execution_buttons").style.display="none";
+                    document.getElementById("account_control").style.display="none";
+                    document.getElementById("execution").style.display="none";
+                    document.getElementById("send_to_live").style.display="none";
+                    document.getElementById("checks").style.display="none";
+                    document.getElementById("account_aum").style.display="none";
+
+                    document.getElementById("strategy_buttons").style.display="none";
+                    document.getElementById("send_recon").style.display="none";
+                    document.getElementById("reason_code").style.display="none";
+                    document.getElementById("strategy_rerun").style.display="none";
+                    document.getElementById("price_source").style.display="none";
+                    document.getElementById("choose_roll").style.display="none";
+                    document.getElementById("eda_rerun").style.display="none";
+                }
+                else{
+                    document.getElementById("send_to_live").style.display="none";
+                    document.getElementById("send_recon").style.display="none";
+                    document.getElementById("execution").style.display="none";
+                    document.getElementById("execution_buttons").style.display="none";
+                    document.getElementById("checks").style.display="none";
+                    document.getElementById("reason_code").style.display="none";
+                    document.getElementById("strategy_buttons").style.display="block";
+                    document.getElementById("account_control").style.display="none";
+                    document.getElementById("strategy_rerun").style.display="none";
+                    document.getElementById("price_source").style.display="none";
+                    document.getElementById("account_aum").style.display="none";
+                    document.getElementById("choose_roll").style.display="none";
+                    document.getElementById("eda_rerun").style.display="none";
+                }
+            }
+
+            function collapse_func(elem_sib)
+            {
+                if (elem_sib.style.display==="block")
+                {
+                    elem_sib.style.display="none"
+                }
+                else
+                {
+                    elem_sib.style.display="block"
+                }
+                change_momentum()
+            }
+
+            function popup_func()
+            {
+                var val = document.getElementById("main_task").value
+
+                if (val === "Rebalancer")
+                {
+                    document.getElementById("myPopup").textContent = "This is used for rebalancing after aum in/out " +
+                        "flows. Strategies and the EDA are not rerun. The signals for the selected strategies created on " +
+                        "main rebalancing day are used to run thinkfolio execution. Constraints and instrument checks " +
+                        "are also run before REBALANC signals are sent for review"
+                }
+                else if (val === "Strategy Rebalance")
+                {
+                    document.getElementById("myPopup").textContent = "This does not rerun strategies or the EDA. " +
+                        "The signals for the selected strategies which were generated during the main rebalance are " +
+                        "used to run thinkfolio execution. Constraints and instrument checks are also run before " +
+                        "REBALANC signals are sent for review"
+                }
+                else if (val === "Full Rebalance")
+                {
+                    document.getElementById("myPopup").textContent = "This is used for the main rebalance " +
+                        "Strategies and the EDA are not rerun by default although they can if the rerun strategies or " +
+                        "rerun eda options are chosen. The signals for the selected strategies are used to run " +
+                        "thinkfolio execution. Constraints are also run with the option to run the minimizer defaulted " +
+                        "to true. Instrument and database checks are not run by default but can be chosen from the " +
+                        "checks panel. Signals with reason code REBALANC are then sent for review"
+                }
+                else if (val === "Run Scheduled Jobs")
+                {
+                    document.getElementById("myPopup").textContent = "This directs the ui to the scheduled jobs page " +
+                        "where  emails and tasks run on a schedule can be triggered manually"
+                }
+                else if (val === "Send Latest Positions To Live")
+                {
+                    document.getElementById("myPopup").textContent = "This gets the latest target position files from " +
+                        "the production target directory on the N drive and sends the positions to production"
+                }
+                else if (val === "Roll Positions")
+                {
+                    document.getElementById("myPopup").textContent = "Runs all prerun checks and constraints as well " +
+                        "as thinkfolio execution with a postroll reason code before signals are sent for review. " +
+                        "Strategies and the Eda are not rerun but strategies need to be chosen. The signals for the " +
+                        "chosen strategies which were generated during the main rebalance are used to run thinkfolio " +
+                        "execution"
+                }
+                else if (val === "Run Strategy Only")
+                {
+                    document.getElementById("myPopup").textContent = "Runs only the chosen strategies. Nothing else is run "
+                }
+                else if (val === "Run Eda Only")
+                {
+                    document.getElementById("myPopup").textContent = "Runs only the expected drawdown analysis. " +
+                        "Nothing else is run "
+                }
+                else if (val === "Run Checks")
+                {
+                    document.getElementById("myPopup").textContent = "Runs only the pre run checks and constraints"
+                }
+                else if (val === "Manual Run")
+                {
+                    document.getElementById("myPopup").textContent = "This offers maximum flexibility to run any " +
+                        "scenario required"
+                }
+                else if (val === "PreRun")
+                {
+                    document.getElementById("myPopup").textContent = "This runs the " +
+                        "strategies, constraints and then allocation minimizer."
+                }
+                else if (val === "Run Hedge Report")
+                {
+                    document.getElementById("myPopup").textContent = "This runs the fx hedge generator and portfolio " +
+                        "hedge compiler to generate the FX hedge report. Select account to generate report for selected" +
+                        "account and send to live to send hedge report to the live"
+                }
+                else
+                    {
+                        document.getElementById("myPopup").textContent = "The algorithm is not run in this case but " +
+                            "you will be redirected to the appropriate page "
+
+                    }
+                var popup = document.getElementById("myPopup");
+                popup.classList.toggle("show");
+            }
+
+            function aum_selection(checkboxElem, check_id) {
+                if (check_id === "True") {
+                    if (checkboxElem.checked) {
+                        document.getElementById("aum_list").style.display = "none";
+                        document.getElementById("aum_load_file").style.display = "block";
+                    } else {
+                        document.getElementById("aum_list").style.display = "none";
+                        document.getElementById("aum_load_file").style.display = "none";
+                    }
+                }
+                if (check_id === "False") {
+                    if (checkboxElem.checked) {
+                        document.getElementById("aum_list").style.display = "block";
+                        document.getElementById("aum_load_file").style.display = "none";
+                    } else {
+                        document.getElementById("aum_list").style.display = "none";
+                        document.getElementById("aum_load_file").style.display = "none";
+                    }
+                }
+            }
+
+            function roll_selection(checkboxElem, check_id) {
+                if (check_id === "manual") {
+                    if (checkboxElem.checked) {
+                        document.getElementById("strategy_buttons").style.display = "block";
+                        document.getElementById("execution_buttons").style.display = "block";
+                        document.getElementById("account_control").style.display="block";
+                        document.getElementById("execution").style.display="block";
+                        document.getElementById("send_to_live").style.display="block";
+                        document.getElementById("checks").style.display="block";
+                        document.getElementById("account_aum").style.display="block";
+                    } else {
+                        document.getElementById("strategy_buttons").style.display = "none";
+                        document.getElementById("execution_buttons").style.display = "none";
+                        document.getElementById("account_control").style.display="none";
+                        document.getElementById("execution").style.display="none";
+                        document.getElementById("send_to_live").style.display="none";
+                        document.getElementById("checks").style.display="none";
+                        document.getElementById("account_aum").style.display="none";
+                    }
+                }
+                if (check_id === "automated") {
+                    if (checkboxElem.checked) {
+                        document.getElementById("strategy_buttons").style.display = "none";
+                        document.getElementById("execution_buttons").style.display = "block";
+                        document.getElementById("account_control").style.display="none";
+                        document.getElementById("execution").style.display="none";
+                        document.getElementById("send_to_live").style.display="block";
+                        document.getElementById("checks").style.display="none";
+                        document.getElementById("account_aum").style.display="block";
+                    } else {
+                        document.getElementById("strategy_buttons").style.display = "none";
+                        document.getElementById("execution_buttons").style.display = "none";
+                        document.getElementById("account_control").style.display="none";
+                        document.getElementById("execution").style.display="none";
+                        document.getElementById("send_to_live").style.display="none";
+                        document.getElementById("checks").style.display="none";
+                        document.getElementById("account_aum").style.display="none";
+                    }
+                }
+            }
+
+            function change_momentum(){
+                var main_task = document.getElementById("main_task").value;
+                if (main_task === "Run Thinkfolio Execution")
+                {
+                    document.getElementById('momentum_strategy').value='{{form.strategy.momentum2}}';
+                }
+                else
+                    {
+                        document.getElementById('momentum_strategy').value='{{form.strategy.momentum}}';
+                    }
+            }
+        </script>
+
+        <form action="" method="post">
+            {{form.hidden_tag()}}
+
+            <div id="tasks" align="left">
+                <label for="main_task">What do you want to do?:</label>
+                <select name="main_task" id="main_task" onchange="do_alert(this.value)">
+                {% for task in tasks_list %}
+                    {% if task == task_name %}
+                        <option selected value="{{ task }}">{{ task }}</option>
+                    {% else %}
+                        <option value="{{ task }}">{{ task }}</option>
+                    {% endif %}
+                {% endfor %}
+                </select>
+                <div class="popup" align="right" onclick="popup_func()">Info!
+                    <span class="popuptext" id="myPopup" hidden>
+                    </span>
+                </div>
+            </div>
+            <br>
+            <div class="responsive">
+                <label for="run_date">Select run date:</label>
+                <span><input style="height:33px;" type="date" id="run_date" name="run_date"></span>
+            </div>
+            <br>
+            <div id="choose_roll" hidden>
+                <legend>Choose how to roll</legend>
+                Manual <input name="choose_roll_method" value="manual" type="checkbox" id="manual" onchange="roll_selection(this, this.id)"/>
+                Automated <input name="choose_roll_method" value="automated" type="checkbox" id="automated" onchange="roll_selection(this, this.id)"/>
+            </div>
+            <br>
+            <div class="container text-align:center">
+                <div id="strategy_buttons" class="form-inline" hidden>
+
+                    <fieldset dir="center">
+                        <legend>Select Strategy</legend>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="card " style="width: 18rem;">
+                                    <button type="button" class="collapsible" onclick="collapse_func(this.nextElementSibling)">Value Strategies</button>
+                                    <div id="value_strategy" hidden>
+                                        <div>
+                                            Select all <input type="checkbox" id="value_select_all" value="True" name="value_select_all" onselect="select_func(this, this.nextElementSibling)">
+                                        </div>
+                                        {{ form.strategy.value }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="card" style="width: 18rem;">
+                                    <button type="button" class="collapsible" onclick="collapse_func(this.nextElementSibling)">Momentum strategies</button>
+                                    <div id="momentum_strategy" hidden>
+                                        <div>
+                                            Select all <input type="checkbox" id="momentum_select_all" name="momentum_select_all" value="True">
+                                        </div>
+                                        {{ form.strategy.momentum }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="card" style="width: 18rem;">
+                                    <button type="button" class="collapsible" onclick="collapse_func(this.nextElementSibling)">Carry strategies</button>
+                                    <div id="carry_strategy" hidden>
+                                        <div>
+                                            Select all <input type="checkbox" id="carry_select_all" name="carry_select_all" value="True">
+                                        </div>
+                                        {{ form.strategy.carry }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <br>
+            <div class="container text-align:center">
+                <div class="form-inline" id="execution_buttons" hidden>
+                    <fieldset dir="center">
+                        <legend>Execution</legend>
+                        <div class="row">
+                            <div class="col-sm-2" id="account_control" hidden>
+                                <div class="card w-25" style="width: 10rem;">
+                                    <table>
+                                        <button type="button" class="collapsible" onclick="collapse_func(this.nextElementSibling)">Choose accounts</button>
+                                        <div id="accounts" hidden>
+                                            <div>
+                                                Select all <input id="account_select_all" name="account_select_all" value="True" type="checkbox" >
+                                            </div>
+                                            {{ form.account }}
+                                        </div>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-sm-2" id="execution" hidden>
+                                <div class="card w-25" style="width: 10rem;">
+                                    <table>
+                                        <button type="button" class="collapsible" onclick="collapse_func(this.nextElementSibling)">Select process</button>
+                                        <div id="execution_options" hidden>
+                                            {{ form.execution }}
+                                        </div>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-sm-2" id="checks" hidden>
+                                <div class="card w-25" style="width: 10rem;">
+                                    <table>
+                                        <button type="button" class="collapsible" onclick="collapse_func(this.nextElementSibling)">Select checks</button>
+                                        <div id="checks_to_run" hidden>
+                                            {{ form.checks }}
+                                        </div>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-sm-2" id="account_aum" hidden>
+                                <div class="card w-25" style="width: 10rem;">
+                                    <table>
+                                        <button type="button" class="collapsible" onclick="collapse_func(this.nextElementSibling)">Add account aum</button>
+                                        <div id="aum_value" hidden>
+                                            <br>
+                                            Load aum from csv
+                                            <br>
+                                            True <input name="load_aum" value="True" type="checkbox" id="True" onchange="aum_selection(this, this.id)"/>
+                                            False <input name="load_aum" value="False" type="checkbox" id="False" onchange="aum_selection(this, this.id)"/>
+                                            <br>
+                                            <div id="aum_list" hidden>
+                                                {{ form.account_aum.sbdi.label }} {{ form.account_aum.sbdi(size=30, maxlength=50) }}
+                                                {{ form.account_aum.cmwba.label }} {{ form.account_aum.cmwba(size=30, maxlength=50) }}
+                                                {{ form.account_aum.cmlaa.label }} {{ form.account_aum.cmlaa(size=30, maxlength=50) }}
+                                            </div>
+                                        </div>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-sm-2" id="price_source" hidden>
+                                <div class="card w-25" style="width: 10rem;">
+                                    <table>
+                                        <button type="button" class="collapsible" onclick="collapse_func(this.nextElementSibling)">Select price source</button>
+                                        <div id="pricing_sources" hidden>
+                                            <select name="price_source" id="price_source">
+                                                {% for task in price_sources %}
+                                                    {% if task == task_name %}
+                                                        <option selected value="{{ task }}">{{ task }}</option>
+                                                    {% else %}
+                                                        <option value="{{ task }}">{{ task }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-sm-2" id="strategy_rerun" hidden>
+                                <div class="card w-25" style="width: 10rem;">
+                                    <table>
+                                        <button type="button" class="collapsible" onclick="collapse_func(this.nextElementSibling)">Rerun Strategies</button>
+                                        <div id="Rerun_strategies" hidden>
+                                            {% for field in form.rerun_strategy if field.widget.input_type != 'hidden' %}
+                                                {{field.label}} {{field}}
+                                            {% endfor %}
+                                        </div>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-sm-2" id="eda_rerun" hidden>
+                                <div class="card w-25" style="width: 10rem;">
+                                    <table>
+                                        <button type="button" class="collapsible" onclick="collapse_func(this.nextElementSibling)">Rerun Eda</button>
+                                        <div id="Rerun_eda" hidden>
+                                            {% for field in form.rerun_eda if field.widget.input_type != 'hidden' %}
+                                                {{field.label}} {{field}}
+                                            {% endfor %}
+                                        </div>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <br>
+            <div class="container" id="aum_load_file" align="left" style="width:800px; margin:0;" hidden>
+                <table>
+                    {{ render_field(file_selection_form.file_path, size=80)}}
+                </table>
+                <div class="form-group form-inline">
+                    <input type="file" id="file_name" name="file_name"><br><br>
+                </div>
+            </div>
+            <div id="reason_code" hidden>
+                <legend>Select reason code</legend>
+                {% for field in form.reason_code if field.widget.input_type != 'hidden' %}
+                    {{field.label}} {{field}}
+                {% endfor %}
+            </div>
+            <br>
+            <div id="send_to_live" hidden>
+                <legend>Send to live?</legend>
+                {% for field in form.send_to_live if field.widget.input_type != 'hidden' %}
+                    {{field.label}} {{field}}
+                {% endfor %}
+            </div>
+            <br>
+            <div id="send_recon" hidden>
+                <legend>Send recon signal?</legend>
+                {% for field in form.send_to_live if field.widget.input_type != 'hidden' %}
+                    {{field.label}} {{field}}
+                {% endfor %}
+            </div>
+            <br>
+            <p style="text-align:center">
+                <label class="submit">
+                    <td><button type="submit">Submit</button></td>
+                </label>
+            </p>
+         </form>
+    </section>
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}

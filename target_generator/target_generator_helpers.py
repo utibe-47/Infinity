@@ -3,6 +3,7 @@ from typing import Dict
 import numpy as np
 import pandas as pd
 
+from data_handler.pull_yahoo_data import YahooDataReader
 from data_handler.tickers import STRATEGY_TICKER_DICT, STRATEGY_LIST
 from utilities.enums import LeadDirection
 from utilities.generic_functions import clean_ticker
@@ -50,3 +51,9 @@ def check_trade_direction(target):
     else:
         direction = LeadDirection.Buy.name
     return direction
+
+
+def read_prices() -> Dict[str, pd.DataFrame]:
+    data_reader = YahooDataReader()
+    prices = data_reader.run()
+    return prices

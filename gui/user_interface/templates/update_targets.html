@@ -1,0 +1,270 @@
+{% extends "base.html" %}
+{% set active_item = 'other' %}
+{% set refresh_item = 'base' %}
+{% from "form_macros.html" import render_field %}
+
+{% block title %}
+Production Alternative Risk Premia Team Environment Dashboard -- Update Targets
+{%  endblock %}
+
+<head>
+    <title>HTML in 10 Simple Steps or Less</title>
+    <meta http-equiv="refresh" content="5" />
+</head>
+
+
+{% block content %}
+
+<style>
+
+.popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  width: 1000px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 16px;
+  padding: 8px 0;
+  position: sticky;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+table {
+    empty-cells:hide;
+    border: 1px double black;
+    border-spacing: 1px;
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+}
+
+th {
+  display: table-cell;
+  vertical-align: inherit;
+  font-weight: bold;
+  text-align: center;
+  padding: 5px;
+  width: 100%;
+}
+
+td {
+  display: table-cell;
+  vertical-align: inherit;
+  text-align: center;
+  padding: 5px;
+  width: 100%;
+}
+
+.text-center {
+  text-align: right;
+}
+
+.responsive {
+    box-sizing: border-box;
+    width: 26%;
+    height: 20px !important; /* specify a height */
+}
+.responsive {
+    position: relative;
+    display: table;
+    border-collapse: separate;
+
+    border: 15px;
+    padding: 0;
+    margin: 0;
+}
+.responsive > input {
+    position: relative;
+    width: 50%;
+    float:left;
+    margin-bottom: 0;
+    display: table-cell;
+}
+.responsive span {
+    position: relative;
+    width: 1%;
+    vertical-align: middle;
+    display: table-cell;
+}
+.responsive span input {
+    margin: 0 0 0 -1px;
+    display: inline-block;
+    vertical-align: middle;
+    overflow: visible;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+
+</style>
+
+    <article>
+        <header>
+            <h1>Welcome {{ user.username }}</h1>
+            <p>What do you want to do today?</p>
+            <p>The algorithm is implemented on a production server with the master version on <a href="https://dev.azure.com/GAMInvestmentsQuants-ARP">Azure Devops</a>.</p>
+        </header>
+
+    </article>
+    <section>
+        <script>
+            var pop_up_dict = {};
+
+            $(document).keypress(
+              function(event){
+                if (event.which === '13') {
+                  event.preventDefault();
+                }
+            });
+
+            function collapse_func(elem_sib)
+            {
+                if (elem_sib.style.display==="block")
+                {
+                    elem_sib.style.display="none"
+                }
+                else
+                {
+                    elem_sib.style.display="block"
+                }
+            }
+
+            function aum_selection(checkboxElem, check_id) {
+                if (check_id === "True") {
+                    if (checkboxElem.checked) {
+                        document.getElementById("aum_list").style.display = "none";
+                        document.getElementById("aum_load_file").style.display = "block";
+                    } else {
+                        document.getElementById("aum_list").style.display = "none";
+                        document.getElementById("aum_load_file").style.display = "none";
+                    }
+                }
+                if (check_id === "False") {
+                    if (checkboxElem.checked) {
+                        document.getElementById("aum_list").style.display = "block";
+                        document.getElementById("aum_load_file").style.display = "none";
+                    } else {
+                        document.getElementById("aum_list").style.display = "none";
+                        document.getElementById("aum_load_file").style.display = "none";
+                    }
+                }
+            }
+
+        </script>
+
+        <form action="" method="post">
+            {{form.hidden_tag()}}
+
+            <div class="responsive">
+                <label for="run_date">Select run date:</label>
+                <span><input style="height:33px;" type="date" id="run_date" name="run_date"></span>
+            </div>
+            <div class="container text-align:center">
+                <div id="strategy_buttons" class="form-inline">
+                    <fieldset dir="center">
+                        <legend>Execution</legend>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="card w-50" style="width: 18rem;">
+                                    <button type="button" class="collapsible" onclick="collapse_func(this.nextElementSibling)">Instruments</button>
+                                    <div id="Instruments" hidden>
+                                        <div>
+                                            Select all <input type="checkbox" id="inst_select_all" value="True" name="inst_select_all" onselect="select_func(this, this.nextElementSibling)">
+                                        </div>
+                                        {{ form.hidden_tag() }}
+                                        {{ form.instrument }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-7" id="position_targets">
+                                <div class="card" style="width: 100%;">
+                                {{ form.hidden_tag() }}
+                                    <button type="button" class="collapsible text-center" onclick="collapse_func(this.nextElementSibling)">Update Targets</button>
+                                    <div id="target_table" hidden>
+                                        <table class="table table-striped table-responsive table-bordered table-layout: fixed " style="text-shadow: aliceblue" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Instrument</th>
+                                                    <th>Position</th>
+                                                    <th>Strike</th>
+                                                    <th>Lead Direction</th>
+                                                 </tr>
+                                             </thead>
+                                            <tbody>
+                                                {% for target in form.targets %}
+                                                    <tr>
+                                                        <td width="100px">{{target['instrument']}} </td>
+                                                        <td width="70px">{{target['position']}}</td>
+                                                        <td width="70px">{{target['strike']}}</td>
+                                                        <td width="100px">{{target['lead_direction']}}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <br>
+            <div id="send_to_live">
+                <legend>Send to live?</legend>
+                {% for field in form.send_to_live if field.widget.input_type != 'hidden' %}
+                    {{field.label}} {{field}}
+                {% endfor %}
+            </div>
+            <br>
+            <p style="text-align:center">
+                <label class="submit">
+                    <td><button type="submit">Submit</button></td>
+                </label>
+            </p>
+         </form>
+    </section>
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}

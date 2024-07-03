@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% from "form_macros.html" import render_field %}
+
+{% block title %}
+Production Alternative Risk Premia Team Environment Dashboard -- Simulation run
+{%  endblock %}
+
+{% block content %}
+    <section>
+        <form action="" method="post">
+            {{form.hidden_tag()}}
+            <h1 style="clear: both">Strategies</h1>
+            FX Value {{ form.strategies.fx_value}}
+            &nbsp;
+            Bond Trend {{ form.strategies.bond_trend}}
+            &nbsp;
+            Bond Carry {{ form.strategies.bond_carry}}
+            &nbsp;
+            FX Trend {{ form.strategies.fx_trend}}
+            &nbsp;
+            Gtaa {{ form.strategies.gtaa}}
+            &nbsp;
+            Commodity Trend {{ form.strategies.commodity_trend}}
+            &nbsp;
+            Credit Carry {{ form.strategies.credit_carry}}
+            &nbsp;
+            Commodity Carry {{ form.strategies.commodity_carry}}
+            &nbsp;
+            Equity Value {{ form.strategies.equity_value}}
+            &nbsp;
+            Dmaa {{ form.strategies.dmaa}}
+            &nbsp;
+            Equity minimum variance {{ form.strategies.equity_minimum_variance}}
+            &nbsp;
+            <h1 style="clear: both">Execution</h1>
+            Run strategies {{ form.run_strategies}}
+            &nbsp;
+            Run execution {{ form.run_execution}}
+            &nbsp;
+            Run expected drawdown analysis {{ form.run_eda}}
+            &nbsp;
+            Send to production {{ form.send_to_live}}
+            &nbsp;
+            <h1 style="clear: both">Reason code</h1>
+            <label class="reason_code">
+                PostRoll<input type="checkbox" name="reason_code" value="postroll">&nbsp;
+            </label>
+            <label class="reason_code">
+                Rebalanc<input type="checkbox" name="reason_code" value="rebalanc">&nbsp;
+            </label>
+            &nbsp;
+            <h1 style="clear: both">Account</h1>
+            <label class="accounts">
+                SBDI<input type="checkbox" name="accounts" value="sbdi">&nbsp;
+            </label>
+            <label class="accounts">
+                ASAR<input type="checkbox" name="accounts" value="asar">&nbsp;
+            </label>
+            <label class="accounts">
+                ASARP<input type="checkbox" name="accounts" value="asarp">&nbsp;
+            </label>
+            <label class="accounts">
+                CYMN<input type="checkbox" name="accounts" value="cymn">&nbsp;
+            </label>
+            <label class="accounts">
+                CMWBA<input type="checkbox" name="accounts" value="cmwba">&nbsp;
+            </label>
+            <label class="accounts">
+                CMLAA<input type="checkbox" name="accounts" value="cmlaa">&nbsp;
+            </label>
+            &nbsp;
+            <h1 style="clear: both">Checks</h1>
+            <label class="checks">
+                Constraints<input type="checkbox" name="checks" value="constraints">&nbsp;
+            </label>
+            <label class="checks">
+                Database check<input type="checkbox" name="checks" value="database">&nbsp;
+            </label>
+            <label class="checks">
+                Instrument check<input type="checkbox" name="checks" value="instrument">&nbsp;
+            </label>
+            &nbsp;
+            <p style="text-align:center">
+                <label class="submit">
+                    <td><button type="submit">Submit</button></td>
+                </label>
+            </p>
+         </form>
+    </section>
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}

@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% set active_item = 'other' %}
+{% set refresh_item = 'base' %}
+{% from "form_macros.html" import render_field %}
+
+{% block title %}
+Production Alternative Risk Premia Team Environment Dashboard -- Scheduled jobs
+{%  endblock %}
+
+<head>
+    <title>HTML in 10 Simple Steps or Less</title>
+    <meta http-equiv="refresh" content="5" />
+</head>
+
+
+{% block content %}
+
+<style>
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+
+.container {
+    width: 1340px;
+  }
+
+</style>
+
+    <section>
+        <script>
+            function collapse_func(elem_sib)
+            {
+                if (elem_sib.style.display==="block")
+                {
+                    elem_sib.style.display="none"
+                }
+                else
+                {
+                    elem_sib.style.display="block"
+                }
+            }
+            function aum_selection(checkboxElem, check_id) {
+                if (check_id === "True") {
+                    if (checkboxElem.checked) {
+                        document.getElementById("aum_list").style.display = "none";
+                        document.getElementById("aum_load_file").style.display = "block";
+                    } else {
+                        document.getElementById("aum_list").style.display = "none";
+                        document.getElementById("aum_load_file").style.display = "none";
+                    }
+                }
+                if (check_id === "False") {
+                    if (checkboxElem.checked) {
+                        document.getElementById("aum_list").style.display = "block";
+                        document.getElementById("aum_load_file").style.display = "none";
+                    } else {
+                        document.getElementById("aum_list").style.display = "none";
+                        document.getElementById("aum_load_file").style.display = "none";
+                    }
+                }
+            }
+        </script>
+        <form action="" method="post">
+            {{form.hidden_tag()}}
+
+            <div class="container text-align:center">
+                <div class="form-inline" id="email_buttons">
+                    <fieldset dir="center">
+                        <legend>Send emails</legend>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <div class="card " style="width: 18rem;">
+                                    {{form.compliance_email}}
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="card " style="width: 18rem;">
+                                    {{form.rebalance_email}}
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="card " style="width: 18rem;">
+                                    {{form.positions_email}}
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="card " style="width: 18rem;">
+                                    {{form.roll_advisor}}
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="card " style="width: 18rem;">
+                                    {{form.paper_trading}}
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <br>
+            <div class="container text-align:center">
+                <div class="form-inline" id="automated_jobs">
+                    <fieldset dir="center">
+                        <legend>Trigger jobs</legend>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="card " style="width: 18rem;">
+                                    {{form.create_position_aggregates}}
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="card " style="width: 18rem;">
+                                    {{form.load_intraday}}
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="card " style="width: 18rem;">
+                                    {{form.run_reconciliation}}
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="card " style="width: 18rem;">
+                                    <button type="button" class="collapsible" onclick="collapse_func(this.nextElementSibling)">Variance Swap Execution</button>
+                                        <div id="aum_value" hidden>
+                                            <br>
+                                            Load aum from csv
+                                            <br>
+                                            True <input name="load_aum" value="True" type="checkbox" id="True" onchange="aum_selection(this, this.id)"/>
+                                            False <input name="load_aum" value="False" type="checkbox" id="False" onchange="aum_selection(this, this.id)"/>
+                                            <br>
+                                            <div id="aum_list" hidden>
+                                                {{ form.account_aum.sbdi(size=30, maxlength=50) }}
+                                                {{ form.account_aum.cmwba(size=30, maxlength=50) }}
+                                                {{ form.account_aum.cmlaa(size=30, maxlength=50) }}
+                                            </div>
+                                            {{form.variance_swap_execution}}
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <br>
+            <div class="container text-align:center">
+                <div class="form-inline" id="basket_jobs">
+                    <fieldset dir="center">
+                        <legend>Create baskets</legend>
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <div class="card " style="width: 18rem;">
+                                    {{form.min_var_execution}}
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <div class="card " style="width: 18rem;">
+                                    {{form.min_var_execution_esg}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container" id="aum_load_file" align="left" style="width:800px; margin:0;" hidden>
+                            <table>
+                                {{ render_field(file_selection_form.file_path, size=80)}}
+                            </table>
+                            <div class="form-group form-inline">
+                                <input type="file" id="file_name" name="file_name"><br><br>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+         </form>
+    </section>
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}

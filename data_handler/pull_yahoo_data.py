@@ -1,4 +1,6 @@
 from yfinance import tickers as tks
+from typing import Dict
+import pandas as pd
 
 from data_handler.tickers import CURRENCY_TICKERS, STOCK_TICKERS, COMMODITY_FUTURES, STOCK_INDICES, CRYPTO_INDICES
 from utilities.generic_functions import clean_ticker
@@ -13,18 +15,17 @@ class YahooDataReader(metaclass=DescriptorNamingMeta):
         self.end_date = end_date
         self.ticker_list = CURRENCY_TICKERS + COMMODITY_FUTURES + STOCK_TICKERS + STOCK_INDICES + CRYPTO_INDICES
 
-    def run(self):
+    def run(self) -> Dict[str, pd.DataFrame]:
         data = {}
         for ticker in self.ticker_list:
             data[clean_ticker(ticker)] = self.query_data(ticker)
         return data
 
-    def query_data(self, ticker: str, start_date: str = None, end_date: str = None):
+    def query_data(self, ticker: str, start_date: str = None, end_date: str = None) -> pd.DataFrame:
         start_date = self.start_date if start_date is None else start_date
         end_date = self.end_date if end_date is None else end_date
         ticker = tks.Ticker(ticker)
         data = ticker.history(start=start_date, end=end_date)[['Close']]
-        # info = ticker.info
         return data
 
     start_date = RunDateChecker()

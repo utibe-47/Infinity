@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        {% set refresh_item = refresh_item|default('base') %}
+        <meta charset="utf-8">
+        {% if refresh_item == 'base' %}
+            <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        {% else %}
+            <meta http-equiv="refresh" content="30">
+        {% endif %}
+        <title>{% block title %}{% endblock %}</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        {% block styles %}
+            <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+            <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+            <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+            <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-theme.css') }}">
+            <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+        {% endblock %}
+
+        <script src="{{ url_for('static', filename='js/vendor/modernizr-2.8.3-respond-1.4.2.min.js') }}"></script>
+
+        <script src="http://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+        <title>Collapsible sidebar using Bootstrap 4</title>
+
+        <!-- Font Awesome JS -->
+        <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+        <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        {% set active_item = active_item|default('base') %}
+        <div class="header-container">
+            <header class="wrapper clearfix">
+
+
+                <a href="{{ url_for('main.index') }}"><h1 class="title">Parte</h1></a>
+                <nav>
+                    <ul>
+                        {% if active_item == 'base' %}
+                            <li><a href="{{ url_for('funds.funds_home') }}">Run</a></li>
+                        {% else %}
+                            <li><a href="{{ url_for('tasks.simulation_progress') }}">Progress</a></li>
+                        {% endif %}
+                        {% if current_user.is_authenticated %}
+                            <li><a href="{{ url_for('results.view_positions', username=current_user.username) }}">
+                                Positions</a></li>
+                            <li><a href="{{ url_for('auth.logout') }}">Sign out</a></li>
+                        {% else %}
+                            <li><a href="{{ url_for('auth.signup') }}">Sign up</a></li>
+                            <li><a href="{{ url_for('auth.login') }}">Sign in</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </header>
+        </div>
+
+        <div class="main-container">
+            <div class="main wrapper clearfix">
+                <article class="flashes">
+                    {% with messages = get_flashed_messages() %}
+                      {% if messages %}
+                        <ul>
+                        {% for message in messages %}
+                          <li>{{ message }}</li>
+                        {% endfor %}
+                        </ul>
+                      {% endif %}
+                    {% endwith %}
+                </article>
+
+                {%  block content %}
+                {%  endblock %}
+
+            </div> <!-- #main -->
+        </div> <!-- #main-container -->
+
+        <div class="footer-container">
+            <footer class="wrapper">
+                <p>Production Alternative Risk Premia Team Environment Dashboard by <a href="https://www.gam.com/gb/en/institutional/funds/featured-funds
+                /gam-systematic-arp">GAM Systematic Alternative Risk Premia</a></p>
+            </footer>
+        </div>
+
+        {{ moment.include_jquery() }}
+        {{ moment.include_moment() }}
+
+        {% block scripts %}
+        {% endblock %}
+    </body>
+</html>

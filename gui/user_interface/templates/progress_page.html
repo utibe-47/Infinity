@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% from "form_macros.html" import render_field %}
+
+{% block title %}
+Production Alternative Risk Premia Team Environment Dashboard -- Simulation progress
+{%  endblock %}
+
+<head>
+    <title>HTML in 10 Simple Steps or Less</title>
+    <meta http-equiv="refresh" content="5" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='DataTables/datatables.min.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='DataTables/datatables.min.js') }}"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+
+</head>
+
+
+{% block content %}
+
+<style>
+
+.popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  width: 1000px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 16px;
+  padding: 8px 0;
+  position: sticky;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+.my-custom-scrollbar {
+position: relative;
+height: 150mm;
+overflow: auto;
+}
+.table-wrapper-scroll-y {
+display: block;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+
+</style>
+
+
+    <section>
+        <h1 style="clear:both">Simulation progress</h1>
+        <form action="" method="post">
+            {{form.hidden_tag()}}
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 15%;">
+                    <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+                    <script> $("#progressBar").css("width", {{form.status.progress}}).attr('aria-valuenow', {{form.status.amount}})</script>
+
+                    <span class="sr-only">{{form.status.progress}} Complete</span>
+                </div>
+            </div>
+
+            <script>
+                namespace = '/progress_status';
+                var socket = io.connect('http://127.0.0.1:5000' + namespace);
+                socket.on('progress', function(msg) {
+                    $('#log').append('<br>' + $('<div/>').text('Received #' + msg.count + ': ' + msg.data).html());
+                });
+            </script>
+            <br>
+            <div class="container">
+                <div class="card" style="box-shadow: #0D3E5B">
+                    {% for message in form.messages.data %}
+                        {{ message|safe }}
+                        <br>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div hidden>
+                <input id="task_name" value="task_name" name="task_name" type="text" />
+            </div>
+
+            <div hidden>
+                <input id="message" value="message" name="message" type="text" />
+            </div>
+
+        </form>
+    </section>
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}

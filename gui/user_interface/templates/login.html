@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% from "form_macros.html" import render_field %}
+
+{% block title %}
+Production Alternative Risk Premia Team Environment Dashboard -- Welcome
+{%  endblock %}
+
+{% block content %}
+    <section>
+        <h1 style="clear: both">Please login</h1>
+        <form action="" method="post">
+            {{form.hidden_tag()}}
+
+            <table>
+                {{ render_field(form.username, size=50) }}
+                {{ render_field(form.password, size=50) }}
+                {{ render_field(form.remember_me) }}
+            </table>
+
+            <p style="text-align:left">
+                <label class="submit">
+                    <td><button type="submit">Submit</button></td>
+                </label>
+            </p>
+            <br>
+            <small class="text-muted">
+            {{ form.reset_password }}
+            </small>
+        </form>
+
+
+    </section>
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}

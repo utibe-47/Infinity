@@ -1,4 +1,4 @@
-from strategies.returns_calculation import calculate_returns
+from portfolio_analytics.returns_calculation import calculate_returns
 
 
 class BreakoutTrend:

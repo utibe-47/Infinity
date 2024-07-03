@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% from "form_macros.html" import render_field %}
+
+{% block title %}
+Production Alternative Risk Premia Team Environment Dashboard -- Load data
+{%  endblock %}
+
+{% block content %}
+    <section>
+        <h1 style="clear:both">Load data</h1>
+        <form action="{{ url_for('results.plot_data') }}" method="post">
+            {{file_selection_form.hidden_tag()}}
+            <div class="form-group form-inline">
+                <table>
+                    {{ render_field(file_selection_form.file_path, size=50)}}
+                </table>
+            </div>
+            <div class="form-group form-inline">
+                <input type="file" id="file_names" name="file_names" multiple><br><br>
+            </div>
+            <input type="submit">
+        </form>
+        {{ script|safe }}
+        {{ div|safe }}
+    </section>
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}

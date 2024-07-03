@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% from "form_macros.html" import render_field %}
+
+{% block title %}
+Production Alternative Risk Premia Team Environment Dashboard -- Sign up
+{%  endblock %}
+
+{% block content %}
+    <section>
+        <h1 style="clear:both">Create an account</h1>
+        <form action="" method="post">
+            {{form.hidden_tag()}}
+            <table>
+                <dl>
+                    {{ render_field(form.username, size=50) }}
+                    {{ render_field(form.email, size=50) }}
+                    {{ render_field(form.password, size=50) }}
+                    {{ render_field(form.confirm_password, size=50) }}
+                    {{ render_field(form.access_code, size=50) }}
+                </dl>
+            </table>
+            <tr class="submit">
+                <td></td>
+                <td><button type="submit">Submit</button>
+                </td>
+            </tr>
+        </form>
+    </section>
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}

@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% set active_item = 'other' %}
+{% set refresh_item = 'base' %}
+{% from "form_macros.html" import render_field %}
+
+{% block title %}
+Production Alternative Risk Premia Team Environment Dashboard -- Japan fund
+{%  endblock %}
+
+<head>
+    <title>HTML in 10 Simple Steps or Less</title>
+    <meta http-equiv="refresh" content="5" />
+</head>
+
+
+{% block content %}
+
+<style>
+
+.popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  width: 1000px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 16px;
+  padding: 8px 0;
+  position: sticky;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+.responsive {
+    box-sizing: border-box;
+    width: 26%;
+    height: 20px !important; /* specify a height */
+}
+.responsive {
+    position: relative;
+    display: table;
+    border-collapse: separate;
+
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+.responsive > input {
+    position: relative;
+    width: 50%;
+    float:left;
+    margin-bottom: 0;
+    display: table-cell;
+}
+.responsive span {
+    position: relative;
+    width: 1%;
+    vertical-align: middle;
+    display: table-cell;
+}
+.responsive span input {
+    margin: 0 0 0 -1px;
+    display: inline-block;
+    vertical-align: middle;
+    overflow: visible;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+
+</style>
+
+    <article>
+        <header>
+            <h1>Welcome {{ user.username }}</h1>
+            <p>What do you want to do today?</p>
+            <p>The page implements the algorithms for the Japan equity systematic fund. For the commodity fund and other Arp funds, please return to the funds home page.</p>
+        </header>
+
+    </article>
+    <section>
+        <script></script>
+
+        <form action="" method="post">
+            {{form.hidden_tag()}}
+
+            <div id="tasks" align="left">
+                <label for="main_task">What do you want to do?:</label>
+                <select name="main_task" id="main_task" onchange="do_alert(this.value)">
+                {% for task in tasks_list %}
+                    {% if task == task_name %}
+                        <option selected value="{{ task }}">{{ task }}</option>
+                    {% else %}
+                        <option value="{{ task }}">{{ task }}</option>
+                    {% endif %}
+                {% endfor %}
+                </select>
+                <div class="popup" align="right" onclick="popup_func()">Info!
+                    <span class="popuptext" id="myPopup" hidden>
+                    </span>
+                </div>
+            </div>
+            <br>
+            <div class="responsive">
+                <label for="run_date">Select run date:</label>
+                <span><input style="height:33px;" type="date" id="run_date" name="run_date"></span>
+            </div>
+
+            <p style="text-align:center">
+                <label class="submit">
+                    <td><button type="submit">Submit</button></td>
+                </label>
+            </p>
+         </form>
+    </section>
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}
+
+src="{{ url_for('static', filename = 'img/background.png')}}"

@@ -1,0 +1,289 @@
+{% extends "base.html" %}
+{% set active_item = 'other' %}
+{% set refresh_item = 'base' %}
+{% from "form_macros.html" import render_field %}
+
+{% block title %}
+Production Alternative Risk Premia Team Environment Dashboard -- Commodity fund
+{%  endblock %}
+
+<head>
+    <title>HTML in 10 Simple Steps or Less</title>
+    <meta http-equiv="refresh" content="5" />
+</head>
+
+
+{% block content %}
+
+<style>
+
+.popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  width: 1000px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 16px;
+  padding: 8px 0;
+  position: sticky;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+.responsive {
+    box-sizing: border-box;
+    width: 26%;
+    height: 20px !important; /* specify a height */
+}
+.responsive {
+    position: relative;
+    display: table;
+    border-collapse: separate;
+
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+.responsive > input {
+    position: relative;
+    width: 50%;
+    float:left;
+    margin-bottom: 0;
+    display: table-cell;
+}
+.responsive span {
+    position: relative;
+    width: 1%;
+    vertical-align: middle;
+    display: table-cell;
+}
+.responsive span input {
+    margin: 0 0 0 -1px;
+    display: inline-block;
+    vertical-align: middle;
+    overflow: visible;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+
+</style>
+
+    <article>
+        <header>
+            <h1>Welcome {{ user.username }}</h1>
+            <p>What do you want to do today?</p>
+            <p>The page implements the algorithms for the Commodity fund. For the Japan fund and other Arp funds, please return to the funds home page.</p>
+        </header>
+
+    </article>
+    <section>
+        <script>
+            var pop_up_dict = {};
+
+            function popup_func() {
+                var val = document.getElementById("main_task").value
+
+                if (val === "Get Positions") {
+                    document.getElementById("myPopup").textContent = "This gathers the latest position data for the " +
+                        "different brokers from files created by the bloomberg overnight data pulls into an easily " +
+                        "digestible format "
+                } else if (val === "Run Allocation") {
+                    document.getElementById("myPopup").textContent = "This runs the allocator to generate the " +
+                        "associated weights, exposures and other risk measures for the different instruments"
+                } else if (val === "Calculate Trades") {
+                    document.getElementById("myPopup").textContent = "This uses the latest weights together with the " +
+                        "latest prices, number of units held and target exposures to calculate the number of units to " +
+                        "trade and thus the target units"
+                } else if (val === "Update Target Positions") {
+                    document.getElementById("myPopup").textContent = "This allows for the manual modification of the " +
+                        "target positions and selection of the required instruments before they are sent down to " +
+                        "production "
+                } else if (val === "Send Targets To Prod") {
+                    document.getElementById("myPopup").textContent = "This gets the latest target position files from " +
+                        "the production target directory on the N drive and saves the positions to production database "
+                } else {
+                    document.getElementById("myPopup").textContent = "The algorithm is not run in this case"
+                }
+                var popup = document.getElementById("myPopup");
+                popup.classList.toggle("show");
+            }
+
+            function aum_selection(checkboxElem, check_id) {
+                if (check_id === "True") {
+                    if (checkboxElem.checked) {
+                        document.getElementById("aum_list").style.display = "none";
+                        document.getElementById("aum_load_file").style.display = "block";
+                    } else {
+                        document.getElementById("aum_list").style.display = "none";
+                        document.getElementById("aum_load_file").style.display = "none";
+                    }
+                }
+                if (check_id === "False") {
+                    if (checkboxElem.checked) {
+                        document.getElementById("aum_list").style.display = "block";
+                        document.getElementById("aum_load_file").style.display = "none";
+                    } else {
+                        document.getElementById("aum_list").style.display = "none";
+                        document.getElementById("aum_load_file").style.display = "none";
+                    }
+                }
+            }
+
+            function collapse_func(elem_sib)
+            {
+                if (elem_sib.style.display==="block")
+                {
+                    elem_sib.style.display="none"
+                }
+                else
+                {
+                    elem_sib.style.display="block"
+                }
+            }
+
+            function do_alert(selectElem_value)
+            {
+                if (selectElem_value === "Get Positions" ) {
+                    document.getElementById("execution_buttons").style.display="none";
+                    document.getElementById("account_aum").style.display="none";
+                }
+                else if  (selectElem_value === "Run allocation" )
+                {
+                    document.getElementById("account_aum").style.display="none";
+                    document.getElementById("execution_buttons").style.display="none";
+                }
+                else if (selectElem_value === "Calculate Trades" )
+                {
+                    document.getElementById("execution_buttons").style.display="block";
+                    document.getElementById("account_aum").style.display="block";
+                }
+                else if (selectElem_value === "Update Target Positions" ) {
+                    document.getElementById("execution_buttons").style.display = "none";
+                    document.getElementById("account_aum").style.display = "none";
+                }
+                else if (selectElem_value === "Send Targets To Prod" ) {
+                    document.getElementById("execution_buttons").style.display = "none";
+                    document.getElementById("account_aum").style.display = "none";
+                }
+                else{
+                    document.getElementById("execution_buttons").style.display="none";
+                    document.getElementById("account_aum").style.display="none";
+                }
+            }
+        </script>
+
+        <form action="" method="post">
+            {{form.hidden_tag()}}
+
+            <div id="tasks" align="left">
+                <label for="main_task">What do you want to do?:</label>
+                <select name="main_task" id="main_task" onchange="do_alert(this.value)">
+                {% for task in tasks_list %}
+                    {% if task == task_name %}
+                        <option selected value="{{ task }}">{{ task }}</option>
+                    {% else %}
+                        <option value="{{ task }}">{{ task }}</option>
+                    {% endif %}
+                {% endfor %}
+                </select>
+                <div class="popup" align="right" onclick="popup_func()">Info!
+                    <span class="popuptext" id="myPopup" hidden>
+                    </span>
+                </div>
+            </div>
+            <br>
+            <div class="responsive">
+                <label for="run_date">Select run date:</label>
+                <span><input style="height:33px;" type="date" id="run_date" name="run_date"></span>
+            </div>
+            <br>
+            <div class="container text-align:center">
+                <div class="form-inline" id="execution_buttons" hidden>
+                    <fieldset dir="center">
+                        <legend>Execution</legend>
+                        <div class="row">
+                            <div class="col-sm-6" id="account_aum" hidden>
+                                <div class="card w-50" style="width: 10rem;">
+                                    <table>
+                                        <button type="button" class="collapsible" onclick="collapse_func(this.nextElementSibling)">Add account aum</button>
+                                        <div id="aum_value" hidden>
+                                            <br>
+                                            Load aum from csv
+                                            <br>
+                                            True <input name="load_aum" value="True" type="checkbox" id="True" onchange="aum_selection(this, this.id)"/>
+                                            False <input name="load_aum" value="False" type="checkbox" id="False" onchange="aum_selection(this, this.id)"/>
+                                            <br>
+                                            <div id="aum_list" hidden>
+                                                {{ form.account_aum.cousf.label}} {{ form.account_aum.cousf(size=30, maxlength=40) }}
+                                            </div>
+                                        </div>
+                                    </table>
+                                </div>
+                            </div>
+                            </div>
+                    </fieldset>
+                </div>
+            </div>
+            <br>
+            <div class="container" id="aum_load_file" align="left" style="width:800px; margin:0;" hidden>
+                <table>
+                    {{ render_field(file_selection_form.file_path, size=80)}}
+                </table>
+                <div class="form-group form-inline">
+                    <input type="file" id="file_name" name="file_name"><br><br>
+                </div>
+            </div>
+            <br>
+
+            <p style="text-align:center">
+                <label class="submit">
+                    <td><button type="submit">Submit</button></td>
+                </label>
+            </p>
+         </form>
+    </section>
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}

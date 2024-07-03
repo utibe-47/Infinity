@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}
+Welcome to PARTE - Production Alternative Risk Premia Team Environment Dashboard
+{%  endblock %}
+
+
+{% block content %}
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <article>
+        <header>
+            <h1>Welcome</h1>
+            <p>The production alternative risk premia team environment dashboard is the user interface for the singularity algorithm used by the GAM systematic alternative risk premia team.</p>
+            <p>The algorithm is implemented on a production server with the master version on <a href="https://dev.azure.com/GAMInvestmentsQuants-ARP">Azure Devops</a>.</p>
+            <p>Don't have an account? Create one by <a href="{{ url_for('auth.signup') }}">Signing up</a></p>
+        </header>
+    </article>
+
+<!--    <div id="slides" class="carousel slide" data-ride="carousel">-->
+<!--        <ul class="carousel-indicators">-->
+<!--            <li data-target="#slides" data-slide-to="0" class="active"></li>-->
+<!--            <li data-target="#slides" data-slide-to="1"></li>-->
+<!--            <li data-target="#slides" data-slide-to="2"></li>-->
+<!--        </ul>-->
+<!--        <div class="carousel-inner">-->
+<!--            <div class="carousel-item active">-->
+<!--                <img src="static/img/background.png">-->
+<!--            </div>-->
+<!--            <div class="carousel-item">-->
+<!--                <img src="static/img/background2.png">-->
+<!--            </div>-->
+<!--            <div class="carousel-item">-->
+<!--                <img src="static/img/background3.png">-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+{% endblock %}

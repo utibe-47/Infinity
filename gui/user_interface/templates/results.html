@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% from "form_macros.html" import render_field %}
+
+{% block title %}
+Production Alternative Risk Premia Team Environment Dashboard -- Get results
+{%  endblock %}
+
+{% block content %}
+    <section>
+        <h1 style="clear:both">Load data</h1>
+        <form action="{{ url_for('results.select_file') }}" method="post">
+            {{file_selection_form.hidden_tag()}}
+            <table>
+                {{ render_field(file_selection_form.file_path, size=50)}}
+            </table>
+            <label for="file_names">Select files:</label>
+            <input type="file" id="file_names" name="file_names" multiple><br><br>
+            <input type="submit">
+        </form>
+        <br>
+        <H1>Plots</H1>
+        <form action="{{ url_for('results.plot_data') }}" method="post">
+            {{results_form.hidden_tag()}}
+            <table>
+                {{ render_field(results_form.title, size=50)}}
+            </table>
+            <select name="y_feature">
+                {% for feature in feature_names %}
+                    {% if feature == y_feature_name %}
+                        <option selected value="{{ feature }}">{{ feature }}</option>
+                    {% else %}
+                        <option value="{{ feature }}">{{ feature }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <input type="submit">
+        </form>
+        {{ script|safe }}
+        {{ div|safe }}
+    </section>
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}

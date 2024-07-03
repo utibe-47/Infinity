@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% from "form_macros.html" import render_field %}
+
+{% block title %}
+Production Alternative Risk Premia Team Environment Dashboard -- Plot data
+{%  endblock %}
+
+{% block content %}
+    <section>
+        <script>
+            function doalert(checkboxElem, check_id)
+            {
+                if (check_id === "line_plot" && checkboxElem.checked ) {
+                    document.getElementById("plot_title").style.display="block";
+                    document.getElementById("y_label").style.display="block";
+                    document.getElementById("x_label").style.display="block";
+                }
+                else if (check_id === "histogram" && checkboxElem.checked ) {
+                    document.getElementById("plot_title").style.display="block";
+                    document.getElementById("feature").style.display="block";
+                    document.getElementById("y_label").style.display="none";
+                    document.getElementById("x_label").style.display="none";
+                }
+                else if (check_id === "table" && checkboxElem.checked ) {
+                    document.getElementById("plot_title").style.display="none";
+                    document.getElementById("feature").style.display="none";
+                    document.getElementById("data_table").style.display="block";
+                    document.getElementById("y_label").style.display="none";
+                    document.getElementById("x_label").style.display="none";
+                }
+                else
+                    {
+                    document.getElementById("plot_title").style.display="none";
+                    document.getElementById("feature").style.display="none";
+                    document.getElementById("y_label").style.display="none";
+                    document.getElementById("x_label").style.display="none";
+                    document.getElementById("data_table").style.display="none";
+                }
+            }
+        </script>
+        <link
+                href="http://cdn.pydata.org/bokeh/release/bokeh-1.4.0.min.css"
+                rel="stylesheet" type="text/css">
+        <link
+                href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-1.4.0.min.css"
+                rel="stylesheet" type="text/css">
+        <script src="http://cdn.pydata.org/bokeh/release/bokeh-1.4.0.min.js"></script>
+        <script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-1.4.0.min.js"></script>
+        <H1>Plots</H1>
+        <form action="" method="post">
+            {{form.hidden_tag()}}
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <table>
+                <div class="form-group form-inline" id="file_name" hidden>
+                    {{ render_field(form.file_name)}}
+                </div>
+                <div class="form-group form-inline" id="plot_title" hidden>
+                    {{ render_field(form.title, size=30)}}
+                </div>
+                <div class="form-group form-inline">
+                    Line Plot <input name="plot_type" value="line_plot" type="checkbox" id="line_plot" onchange="doalert(this, this.id)"/>
+                    Multi Line Plot <input name="plot_type" value="multi_line_plot" type="checkbox" id="multi_line_plot" onchange="doalert(this, this.id)"/>
+                    Histogram <input name="plot_type" value="histogram" type="checkbox" id="histogram" onchange="doalert(this, this.id)"/>
+                    Pie Chart <input name="pie_chart" value="pie_chart" type="checkbox" id="pie_chart" onchange="doalert(this, this.id)"/>
+                    Table <input name="table" value="table" type="checkbox" id="table" onchange="doalert(this, this.id)"/>
+                </div>
+            </table>
+            <div id="y_label" hidden>
+                <label for="y_feature">Y-Value:</label>
+                <select name="y_feature" id="y_feature">
+                {% for feature in feature_names %}
+                    {% if feature == y_feature_name %}
+                        <option selected value="{{ feature }}">{{ feature }}</option>
+                    {% else %}
+                        <option value="{{ feature }}">{{ feature }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            </div>
+            <div id="x_label" hidden>
+                <label for="x_feature">X-Value:</label>
+                <select name="x_feature" id="x_feature" type="hidden">
+                    {% for feature in feature_names %}
+                        {% if feature == x_feature_name %}
+                            <option selected value="{{ feature }}">{{ feature }}</option>
+                        {% else %}
+                            <option value="{{ feature }}">{{ feature }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div id="feature" hidden>
+                <label for="h_feature">Feature:</label>
+                <select name="h_feature" id="h_feature" type="hidden">
+                    {% for feature in feature_names %}
+                        {% if feature == x_feature_name %}
+                            <option selected value="{{ feature }}">{{ feature }}</option>
+                        {% else %}
+                            <option value="{{ feature }}">{{ feature }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="table-dark" id="data_table" hidden>
+                {{ data_df.to_html() | safe}}
+            </div>
+            <input type="submit">
+        </form>
+        {{ script|safe }}
+        {{ div|safe }}
+        {% if form.errors %}
+        {{ form.errors }}
+{% endif %}
+    </section>
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}

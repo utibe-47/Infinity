@@ -1,5 +1,5 @@
 from data_handler.pull_yahoo_data import YahooDataReader
-from portfolio_construction.portfolio_builder import PortfolioBuilder
+from target_generator.target_generator_main import PortfolioBuilder
 from strategies.strategy_runner import StrategyRunner
 
 

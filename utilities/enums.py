@@ -17,3 +17,9 @@ class LeadDirection(Enum):
     Hold = 0
     Buy = 1
     Sell = 2
+
+
+@unique
+class ReasonCodes(Enum):
+    rebalance = 0
+    roll = 1

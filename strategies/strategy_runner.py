@@ -1,3 +1,4 @@
+from target_generator.target_generator_helpers import get_signals
 
 
 class StrategyRunner:
@@ -6,4 +7,5 @@ class StrategyRunner:
         self.signals = {}
 
     def run(self, ticker_data: dict):
-        return self.signals
+        signals = get_signals()
+        return signals

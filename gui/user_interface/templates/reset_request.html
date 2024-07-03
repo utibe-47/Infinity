@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% from "form_macros.html" import render_field %}
+
+{% block title %}
+Production Alternative Risk Premia Team Environment Dashboard -- Request reset
+{%  endblock %}
+
+{% block content %}
+    <section>
+        <h1 style="font-size: 24px ">Request password reset</h1>
+        <form action="" method="post">
+            {{form.hidden_tag()}}
+            <div class="form-group form-inline form-control-sm">
+                <table >
+                    {{ render_field(form.email, size=50) }}
+                </table>
+            </div>
+            <tr class="submit">
+                <td></td>
+                <td><button type="submit">Submit</button>
+                </td>
+            </tr>
+
+
+
+        </form>
+    </section>
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% set active_item = 'other' %}
+{% set refresh_item = 'base' %}
+{% from "form_macros.html" import render_field %}
+
+{% block title %}
+Production Alternative Risk Premia Team Environment Dashboard -- Rebalancing weights
+{%  endblock %}
+
+<head>
+    <title>HTML in 10 Simple Steps or Less</title>
+    <meta http-equiv="refresh" content="5" />
+
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+	<script>
+	$(function() {
+		$( ".dtpick" ).datepicker();
+	});
+	</script>
+</head>
+
+
+{% block content %}
+
+<style>
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+
+</style>
+
+    <section>
+        <form action="" method="post">
+            {{form.hidden_tag()}}
+
+            <div class="container text-align:center" style="width: 1200px">
+                <div class="form-inline">
+                    <fieldset dir="center" style="animation: alternate">
+                        <legend>Send rebalancing weights</legend>
+                        <div class="row" align="left">
+                            <div class="container-fluid">
+                                <div class="card " style="width: 18rem;">
+                                    Rerun Eda
+                                    {% for field in form.run_eda if field.widget.input_type != 'hidden' %}
+                                    {{field.label}} {{field}}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row" style="alignment: center">
+                            <div class="col-sm-3">
+                                {{ form.hidden_tag() }}
+                                {{ form.run_date.label }} {{ form.run_date }}
+                            </div>
+                            <div class="col-sm-3">
+                                {{ form.hidden_tag() }}
+                                {{ form.previous_date.label }} {{form.previous_date}}
+                            </div>
+                            <div class="col-sm-3">
+                                {{ form.hidden_tag() }}
+                                {{ form.price_source.label }}
+                                <div>
+                                    <select name="price_source" id="price_source">
+                                        {% for task in price_sources %}
+                                            {% if task == task_name %}
+                                                <option selected value="{{ task }}">{{ task }}</option>
+                                            {% else %}
+                                                <option value="{{ task }}">{{ task }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                    </fieldset>
+                    {{form.send_email}}
+                </div>
+
+            </div>
+         </form>
+    </section>
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}
