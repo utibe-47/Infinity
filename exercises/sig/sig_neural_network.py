@@ -43,3 +43,10 @@ def run_nn_model(data, target_variable, predictors):
     model.fit(x_train, y_train, batch_size=best_params['batch_size'], epochs=best_params['epochs'], verbose=1)
     testing_data = generate_predictions(model, predictor_scaler_fit, target_var_scaler_fit, predictors, x_test, y_test)
     return model, testing_data
+
+
+def vec_impl(df):
+    import datetime
+    cutoff_date = datetime.date.today() + datetime.timedelta(days=2)
+    output = (2*(df['priority'] == 'HIGH') + (df['due_date'] <= cutoff_date))
+    return output

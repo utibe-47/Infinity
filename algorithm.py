@@ -1,5 +1,5 @@
 from data_handler.pull_yahoo_data import YahooDataReader
-from target_generator.target_generator_main import PortfolioBuilder
+from target_generator.target_generator_main import TradingTargetsBuilder
 from strategies.strategy_runner import StrategyRunner
 
 
@@ -8,7 +8,7 @@ class Algorithm:
     def __init__(self):
         self.data_reader = YahooDataReader()
         self.strategy_runner = StrategyRunner()
-        self.portfolio_builder = PortfolioBuilder()
+        self.portfolio_builder = TradingTargetsBuilder()
 
     def run(self):
         ticker_data = self.run_data_reader()

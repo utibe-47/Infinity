@@ -11,8 +11,9 @@ class TestTargetGenerator(TestCase):
         self.allocations = get_allocations()
         self.signals = get_signals()
         self.prices = read_prices()
-        self.target_generator.aum = get_aum()
+        self.aum = get_aum()
 
     def test_target_generator_runner(self):
-        targets = self.target_generator.run(self.signals, self.allocations, self.prices)
+        targets = self.target_generator.run(self.signals, self.allocations, self.prices, self.aum)
         self.assertIsNotNone(targets)
+
